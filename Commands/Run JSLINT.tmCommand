@@ -144,7 +144,7 @@ puts document_tmplate(errors, warnings)
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
-	<string>source.js text.html</string>
+	<string>source.js</string>
 	<key>uuid</key>
 	<string>A5505A60-608C-4E99-A363-0C2E44C5ED95</string>
 </dict>
