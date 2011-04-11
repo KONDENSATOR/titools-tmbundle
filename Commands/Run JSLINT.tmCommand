@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+# The program takes a javascript or html file
+# and runs it through jslint (jsl command).
+#
+# This application is intended for usage with
+# TextMate as a TextMate bundle.
+#
+# Author::    Fredrik Andersson (mailto:fredrik@kondensator.se)
+# Copyright:: Copyright (c) 2011 KONDENSATOR AB
+# License::   Distributes under the same terms as Ruby
+
+require "cgi"
+
+# Split input on empty lines
+def error_chunks(text) 
+  text.split(/^$/)
+end
+
+# Parse a text chunk
+def parse(text)
+  match = text.scan(/^(\/[^:]+):\s([^:]+):\s(.+)$/)[0]
+  
+  return nil if match == nil
+  
+  filename = match[0]
+  
+  result = {
+    :linenumber =&gt; filename.scan(/.*\((\d+)\)/),
+    :filename =&gt; filename.sub(/\((\d+)\)/, ""),
+    :type =&gt; match[1],
+    :description =&gt; match[2],
+    :code =&gt; text.scan(/^(.+)$/)[1][0],
+    :position =&gt; text.scan(/^(.*)\^$/)[0][0]
+  }
+  return result
+end
+
+# Output item html
+def item_template(item, type)
+    html = &lt;&lt;output
+      &lt;div class='issue #{type}'&gt;
+        &lt;div class='filename'&gt;#{item[:filename]}&lt;/div&gt;
+        &lt;div class='description'&gt;#{type} #{item[:description]}&lt;/div&gt;
+        &lt;span class='line_number'&gt;Line #{item[:linenumber]}&lt;span&gt;
+        &lt;span class='code'&gt;&lt;a href="txmt://open?url=file://#{item[:filename]}&amp;line=#{item[:linenumber]}"&gt;#{CGI::escapeHTML(item[:code])}&lt;/a&gt;&lt;/span&gt;
+      &lt;/div&gt;
+output
+end
+
+# Output document template
+def document_tmplate(errors, warnings)
+  warnings_str = warnings.map() { |warning| item_template(warning, :warning) }.join("\n")
+  errors_str = errors.map() { |error| item_template(error, :error) }.join("\n")
+  
+  html = &lt;&lt;output
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;style type="text/css"&gt;
+        body { font-family:sans-serif; }
+
+        h2 { font-size: 18px; margin: 18px 0 4px 4px; }
+
+        h2.errors, h2.errors a { color: #cc3300; }
+
+        h2.warnings, h2.warnings a { color: #0563b2; }
+
+        a { text-decoration:none; color: #000; }
+        a:hover { text-decoration:underline; }
+        .error { background-color:#f9d3d3; border-color: #cc3300; }
+        .error a{ color: #cc3300; }
+        .warning { background-color:#ebf4fc; border-color: #0563b2; }
+        .warning a{ color: #0563b2; }
+        .issue {
+          border-style:solid;
+          border-width:1px;
+          margin-bottom:5px;
+          padding:8px;
+          border-radius: 8px;
+          -moz-border-radius: 8px;
+        }
+        .filename, .line_number, .description { font-size: 12px; margin-bottom: 3px; }
+        .line_number {
+          min-width:170px;
+          font-family: "Bitstream Vera Sans Mono", monospace;
+          font-weight: bold;
+        }
+        .filename:before { font-weight: bold; content: 'File: '; }
+        .code {
+          font-family: "Bitstream Vera Sans Mono", monospace;
+          /*border-style:dotted;*/
+          border-width:1px;
+          margin-bottom:5px;
+          font-weight: bold;
+        }
+        .footer {
+          margin-top: 10px;
+          text-align: right;
+          color: #AAA;
+          font-size: 12px;
+        }
+        &lt;/style&gt;
+      &lt;/head&gt;
+    &lt;body&gt;
+      &lt;h2 class="errors"&gt;Errors (#{errors.length})&lt;/h2&gt;
+      #{errors_str}
+      &lt;h2 class="errors"&gt;Warnings (#{warnings.length})&lt;/h2&gt;
+      #{warnings_str}
+      &lt;div class="footer"&gt;JSLINT TextMate bundle provided by &lt;a href="http://kondensator.se"&gt;KONDENSATOR&lt;/a&gt;&lt;/div&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;
+output
+end
+
+# Execute jsl command
+s = `jsl -process "$TM_FILEPATH"`
+
+# Ignore jquery files
+chunks = error_chunks(s).select { |itm| not itm =~ /.*jquery.*/i }
+
+# Parse output
+chunks = chunks.map { |chunk| parse(chunk) }
+
+# Devide result in errors and warnings
+errors = chunks.select { |chunk| chunk == nil ? false : (chunk[:type] =~ /.*error.*/i ? true : false) }
+warnings = chunks.select { |chunk| chunk == nil ? false : chunk[:type] =~ /.*warning.*/i ? true : false }
+
+# Generate HTML
+puts document_tmplate(errors, warnings)
+</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>@b</string>
+	<key>name</key>
+	<string>Run JSLINT</string>
+	<key>output</key>
+	<string>showAsHTML</string>
+	<key>scope</key>
+	<string>source.js text.html</string>
+	<key>uuid</key>
+	<string>A5505A60-608C-4E99-A363-0C2E44C5ED95</string>
+</dict>
+</plist>
