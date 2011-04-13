@@ -9,8 +9,19 @@ Bundle for TextMate which allows you to
 Installation
 ============
 
-Open terminal
+Open terminal and enter:
 
 `git clone git://github.com/KONDENSATOR/TM-JSLINT.git ~/Library/Application\ Support/TextMate/Bundles/ti-tools.tmbundle`
+
+Restart TextMate or reload your bundles from within TextMate.
+
+Updating
+========
+
+Open terminal and enter:
+
+`cd ~/Library/Application\ Support/TextMate/Bundles/ti-tools.tmbundle`
+
+`git pull`
 
 Restart TextMate or reload your bundles from within TextMate.
