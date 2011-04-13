@@ -5,59 +5,8 @@
 	<key>beforeRunningCommand</key>
 	<string>saveModifiedFiles</string>
 	<key>command</key>
-	<string>#!/usr/bin/env ruby
-
-# The program takes a javascript or html file
-# and runs it through jslint (jsl command).
-#
-# This application is intended for usage with
-# TextMate as a TextMate bundle.
-#
-# Author::    Fredrik Andersson (mailto:fredrik@kondensator.se)
-# Copyright:: Copyright (c) 2011 KONDENSATOR AB
-# License::   Distributes under the same terms as Ruby
-
-require "cgi"
-
-# Split input on empty lines
-def error_chunks(text) 
-  text.split(/^$/)
-end
-
-# Parse a text chunk
-def parse(text)
-  match = text.scan(/^(\/[^:]+):\s([^:]+):\s(.+)$/)[0]
-  
-  return nil if match == nil
-  
-  filename = match[0]
-  
-  result = {
-    :linenumber =&gt; filename.scan(/.*\((\d+)\)/),
-    :filename =&gt; filename.sub(/\((\d+)\)/, ""),
-    :type =&gt; match[1],
-    :description =&gt; match[2],
-    :code =&gt; text.scan(/^(.+)$/)[1][0],
-    :position =&gt; text.scan(/^(.*)\^$/)[0][0]
-  }
-  return result
-end
-
-# Execute jsl command
-s = `jsl -process "$TM_FILEPATH"`
-
-# Ignore jquery files
-chunks = error_chunks(s).select { |itm| not itm =~ /.*jquery.*/i }
-
-# Parse output
-chunks = chunks.map { |chunk| parse(chunk) }
-
-# Devide result in errors and warnings
-errors = chunks.select { |chunk| chunk == nil ? false : (chunk[:type] =~ /.*error.*/i ? true : false) }
-warnings = chunks.select { |chunk| chunk == nil ? false : chunk[:type] =~ /.*warning.*/i ? true : false }
-
-puts "#{errors.length} errors, #{warnings.length} warnings"
-</string>
+	<string>ruby "$TM_BUNDLE_SUPPORT/summary_jslint.rb"
+	</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
