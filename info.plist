@@ -3,12 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>name</key>
-	<string>JSLINT</string>
+	<string>Titanium Tools</string>
 	<key>ordering</key>
 	<array>
 		<string>A5505A60-608C-4E99-A363-0C2E44C5ED95</string>
 		<string>478742D1-030A-4613-AA09-1FC3551AFFE7</string>
 		<string>73C3F17F-F39C-423B-B120-F7CE3D16B107</string>
+		<string>E51F3990-7399-4B67-A9D1-020F4782DC4D</string>
+		<string>4B1E72AA-955F-42F1-B505-6A8BF0C10DA2</string>
 	</array>
 	<key>uuid</key>
 	<string>091BCD49-B987-4749-BACE-04C4F5077ED1</string>

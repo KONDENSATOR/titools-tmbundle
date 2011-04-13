@@ -1,8 +1,12 @@
 
 def document_tmplate(cmd)
+  bundle_support = ENV['TM_BUNDLE_SUPPORT']
+  
   html = <<output
+  <!DOCTYPE html>
   <html>
     <head>
+    	<meta charset="utf-8">
       <style type="text/css">
         body { font-family:sans-serif; }
         .debug {
@@ -11,13 +15,6 @@ def document_tmplate(cmd)
           border-width:1px;
           margin-bottom:5px;
           font-weight: bold;
-          font-size: 12px;
-        }
-        .information {
-          font-family: "Bitstream Vera Sans Mono", monospace;
-          /*border-style:dotted;*/
-          border-width:1px;
-          margin-bottom:5px;
           font-size: 12px;
         }
         .info {
@@ -33,56 +30,74 @@ def document_tmplate(cmd)
           color: #AAA;
           font-size: 12px;
         }
+        header .toggle_button {
+        	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#83c77a), to(#0e6700));
+        	width: 103px;
+        	height: 15px;
+        	float: right;
+        	border: 1px solid green;
+        	text-align: center;
+        	padding-left: 2px;
+        	font-size: 12px;
+        	margin-right: 10px;
+        	margin-top: 10px;
+        	cursor: pointer;
+        	opacity: 0.75;
+
+        	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        	-webkit-border-radius: 10px;
+        	-webkit-transition-property:opacity;
+        	-webkit-transition-duration: 0.15s, 0.15s;
+        	-webkit-transition-timing-function: linear, ease-in;
+        }
+
+        header .toggle_button:hover {
+        	opacity: 1.0;
+        }
+
+        header .toggle_button .toggle_tooltip {
+        	display: none;
+
+        	font-size: 10px;
+        	color: white;
+        	padding: 3px;
+        	border: 1px solid black;
+        	background-color:rgba(0,0,0,0.5);
+        	width: 115px;
+        	margin-top: -17px;
+
+        	position: absolute;
+        	right: 30px;
+
+        	-webkit-transition-property:display;
+        	-webkit-transition-duration: 0.15s, 0.15s;
+        	-webkit-transition-timing-function: linear, ease-in;
+        }
+
+        header .toggle_button:hover .toggle_tooltip {
+        	display: block;
+        }
         </style>
+        <script type="text/javascript" src="file://#{bundle_support}/jquery-1.5.2.min.js"></script>
+        <script type="text/javascript" src="file://#{bundle_support}/mate_console.js"></script>
+        <script type="text/javascript">
+          function toggle_display(type) {
+            $('.' + type).css('display','none');
+          }
+        </script>
       </head>
     <body>
+      <header>
+        <div id="toggle_debug" class="toggle_button" onclick="toggle_display('debug');">Debug<div class="toggle_tooltip" id="toggle_debug_tooltip">Shows/Hides debug log</div></div>
+        <div id="toggle_info" class="toggle_button" onclick="toggle_display('info');">Info<div class="toggle_tooltip" id="toggle_info_tooltip">Shows/Hides info log</div></div>
+      </header>
       <div id="result">
       </div>
       <div class="footer">JSLINT TextMate bundle provided by <a href="http://kondensator.se">KONDENSATOR</a></div>
       <script>
-        function log_line(type, output, timestamp, host_code){
-          type = type.toLowerCase();
-          
-          return "<div class='" + type + "'>" + output + "</div>";
-        }
-        
-        function to_lines(read_input, f) {
-          var lines = read_input.split("\\n");
-          for(var li in lines) {
-            var line = lines[li];
-            console.log(line);
-            f(line);
-          }
-        }
-        
-        myCommand = TextMate.system("#{cmd}");
-        myCommand.onreadoutput = function(read_input) {           
-          to_lines(read_input, function(line) {            
-            
-            // Desktop log line
-            // [20:19:13:685] [Titanium.Host] [Information] Loaded module = tifilesystem
-            
-            // Mobile log line
-            // [DEBUG] executing command: /usr/bin/killall iPhone Simulator
-            
-            // Desktop regex
-            var regex = /^\\[([^\\]]+)\\]\\s+\\[([^\\]]+)\\]\\s+\\[([^\\]]+)\\]\\s(.+)$/;
-            var matches = regex.exec(line);
-
-            if(matches !== null) {
-              document.getElementById("result").innerHTML += log_line(matches[3], matches[4], matches[1], matches[2]);
-            } else {
-              
-              regex = /^\\[([^\\]]+)\\]\\s(.+)$/;
-              var matches = regex.exec(line);
-              
-              if(matches !== null) {
-                document.getElementById("result").innerHTML += log_line(matches[1], matches[2]);
-              }
-            }
-          });
-        };
-        myCommand.onreaderror = function(str) { console.log("error: " + str); };
+        $(document).ready(function(){
+          run("#{cmd}");
+        });
       </script>
     </body>
   </html>

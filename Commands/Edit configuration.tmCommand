@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>mate "$TM_BUNDLE_SUPPORT/config.rb"</string>
+	<key>input</key>
+	<string>none</string>
+	<key>name</key>
+	<string>Edit configuration</string>
+	<key>output</key>
+	<string>discard</string>
+	<key>uuid</key>
+	<string>4B1E72AA-955F-42F1-B505-6A8BF0C10DA2</string>
+</dict>
+</plist>

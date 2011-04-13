@@ -11,6 +11,7 @@
 # License::   Distributes under the same terms as Ruby
 
 require ENV['TM_BUNDLE_SUPPORT'] + '/common_build_titanium'
+require ENV['TM_BUNDLE_SUPPORT'] + '/config'
 
 # Traverse the directory tree to find the root of the project
 def find_project_root(dir)
@@ -35,18 +36,14 @@ name = tiapp_xml.scan(/^\<name\>(.*)\<\/name\>/)[0]
 # Is project a desktop or mobile project
 desktop = tiapp_xml =~ /\<url\>app:\/\/.+\<\/url\>/
 
-# iPhone SDK version
-version = "4.3"
 
 if desktop == nil then
   # Command for running desktop app
-  cmd = "python '/Library/Application Support/Titanium/mobilesdk/osx/1.5.1/iphone/builder.py' simulator '#{version}' '#{proj_dir}' #{id} '#{name}' iphone"
+  cmd = "python '#{@titanium_path}/mobilesdk/osx/#{@tim_version}/iphone/builder.py' simulator '#{@ios_version}' '#{proj_dir}' #{@id} '#{@name}' iphone"
 elsif
   # Command for running iPhone app
-  cmd = "python '/Library/Application Support/Titanium/sdk/osx/1.1.0/tibuild.py' -d '#{proj_dir}/dist/osx' -a '/Library/Application Support/Titanium/sdk/osx/1.1.0' -n -r -v -s '/Library/Application Support/Titanium' '#{proj_dir}'"
+  cmd = "python '#{@titanium_path}/sdk/osx/#{@tid_version}/tibuild.py' -d '#{proj_dir}/dist/osx' -a '#{@titanium_path}/sdk/osx/#{@tid_version}' -n -r -v -s '#{@titanium_path}' '#{proj_dir}'"
 end
 
-# puts ENV["TM_PROJECT_DIRECTORY"]
-# puts cmd
 # Execute output
 document_tmplate(cmd)
