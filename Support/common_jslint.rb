@@ -114,7 +114,7 @@ end
 
 # Execute jsl command
 def run_jsl()
-  s = `jsl -conf "#{ENV['TM_BUNDLE_SUPPORT']}/jsl.conf" -process "#{ENV['TM_FILEPATH']}"`
+  s = `"#{ENV['TM_BUNDLE_SUPPORT']}/jsl-0.3.0-mac/jsl" -conf "#{ENV['TM_BUNDLE_SUPPORT']}/jsl.conf" -process "#{ENV['TM_FILEPATH']}"`
   
   # Ignore jquery files
   chunks = error_chunks(s).select { |itm| not itm =~ /.*jquery.*/i }
