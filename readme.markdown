@@ -25,3 +25,12 @@ Open terminal and enter:
 `git pull`
 
 Restart TextMate or reload your bundles from within TextMate.
+
+Usage
+=====
+
+Shortcuts
+
+ * **Cmd + R** (Build and run project)
+ * **Cmd + B** (Run JSLint on current javascript file)
+

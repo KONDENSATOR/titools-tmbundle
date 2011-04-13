@@ -16,6 +16,7 @@ def document_tmplate(cmd)
           margin-bottom:5px;
           font-weight: bold;
           font-size: 12px;
+          display: none;
         }
         .info {
           font-family: "Bitstream Vera Sans Mono", monospace;
@@ -23,6 +24,7 @@ def document_tmplate(cmd)
           border-width:1px;
           margin-bottom:5px;
           font-size: 12px;
+          display: none;
         }
         .footer {
           margin-top: 10px;
@@ -81,22 +83,38 @@ def document_tmplate(cmd)
         <script type="text/javascript" src="file://#{bundle_support}/jquery-1.5.2.min.js"></script>
         <script type="text/javascript" src="file://#{bundle_support}/mate_console.js"></script>
         <script type="text/javascript">
-          function toggle_display(type) {
-            $('.' + type).css('display','none');
+          var debug_visible = false;
+          var info_visible = true;
+          
+          function toggle_display(type, visibility) {
+            if(visibility === true) {
+              $('.' + type).css('display','block');              
+              return false;
+            } else {
+              $('.' + type).css('display','none');              
+              return true;
+            }
           }
         </script>
       </head>
     <body>
       <header>
-        <div id="toggle_debug" class="toggle_button" onclick="toggle_display('debug');">Debug<div class="toggle_tooltip" id="toggle_debug_tooltip">Shows/Hides debug log</div></div>
-        <div id="toggle_info" class="toggle_button" onclick="toggle_display('info');">Info<div class="toggle_tooltip" id="toggle_info_tooltip">Shows/Hides info log</div></div>
+        <div id="toggle_debug" class="toggle_button" onclick="debug_visible = toggle_display('debug', debug_visible);">Debug<div class="toggle_tooltip" id="toggle_debug_tooltip">Shows/Hides debug log</div></div>
+        <div id="toggle_info" class="toggle_button" onclick="info_visible = toggle_display('info', info_visible);">Info<div class="toggle_tooltip" id="toggle_info_tooltip">Shows/Hides info log</div></div>
       </header>
       <div id="result">
       </div>
       <div class="footer">JSLINT TextMate bundle provided by <a href="http://kondensator.se">KONDENSATOR</a></div>
       <script>
         $(document).ready(function(){
-          run("#{cmd}");
+          run("#{cmd}", function(type, output, timestamp, host_code){
+            var displ = 'none';
+            if((type == 'info' && debug_visible === true) ||
+              (type == 'info' && info_visible === true)) {
+              displ = 'block';
+            }
+            return "<div style='display:"+ displ +";' class='" + type + "'>" + output + "</div>";
+          });
         });
       </script>
     </body>
