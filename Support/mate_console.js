@@ -28,9 +28,9 @@ function run(cmd, f) {
 			// Desktop regex
 			var regex = /^\[([^\]]+)\]\s+\[([^\]]+)\]\s+\[([^\]]+)\]\s(.+)$/;
 			var matches = regex.exec(line);
-
+			var html = "";
 			if(matches !== null) {
-				document.getElementById("result").innerHTML += log_line(f, matches[3], matches[4], matches[1], matches[2]);
+				html = log_line(f, matches[3], matches[4], matches[1], matches[2]);
 			} else {
 
 				// Mobile regex
@@ -38,10 +38,15 @@ function run(cmd, f) {
 				matches = regex.exec(line);
 
 				if(matches !== null) {
-					document.getElementById("result").innerHTML += log_line(f, matches[1], matches[2]);
+					html = log_line(f, matches[1], matches[2]);					
 				}
-			}
+			}			
+			var el = $(html);
+									
+			el.appendTo('#result');
 		});
+		
+		prettyPrint();
 	};
-	myCommand.onreaderror = function(str) { console.log("error: " + str); };
+	myCommand.onreaderror = function(str) { console.log("error: " + str); };	
 }

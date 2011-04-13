@@ -13,6 +13,7 @@
 require ENV['TM_BUNDLE_SUPPORT'] + '/common_build_titanium'
 require ENV['TM_BUNDLE_SUPPORT'] + '/config'
 
+
 # Traverse the directory tree to find the root of the project
 def find_project_root(dir)
   f = File.join(dir, "tiapp.xml")
