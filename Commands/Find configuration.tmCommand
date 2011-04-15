@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>ruby "$TM_BUNDLE_SUPPORT/find_variables.rb"</string>
+	<key>input</key>
+	<string>none</string>
+	<key>name</key>
+	<string>Find configuration</string>
+	<key>output</key>
+	<string>openAsNewDocument</string>
+	<key>uuid</key>
+	<string>FCD569D0-21F7-4302-A577-8C669FA583C2</string>
+</dict>
+</plist>

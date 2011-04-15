@@ -16,6 +16,8 @@ require ENV['TM_BUNDLE_SUPPORT'] + '/config'
 
 # Traverse the directory tree to find the root of the project
 def find_project_root(dir)
+  return nil if dir == nil 
+    
   f = File.join(dir, "tiapp.xml")
   
   return dir if File.exist?(f)
@@ -24,6 +26,14 @@ end
 
 # Find out project dir root
 proj_dir = find_project_root(ENV["TM_PROJECT_DIRECTORY"])
+
+if proj_dir == nil then
+  
+  puts "<p><b>Error finding tiapp.xml</b> - You must open your TextMate project folder from within a Titanium project path.</p>"
+  puts "<p>Preferably the root of the project or the Resources folder.</p>"
+  
+  exit()
+end
 
 # Read project tiapp.xml
 tiapp_xml = File.open(File.join(proj_dir, "tiapp.xml"), 'r') { |f| f.read }
