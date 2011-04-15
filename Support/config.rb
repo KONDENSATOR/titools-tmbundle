@@ -2,7 +2,7 @@
 @ios_version = "4.2"
 
 # Titanium Mobile version
-@tim_version = "1.6.1"
+@tim_version = "1.5.1"
 
 # Titanium Desktop version
 @tid_version = "1.1.0"

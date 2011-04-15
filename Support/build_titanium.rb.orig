@@ -27,6 +27,9 @@ end
 # Find out project dir root
 proj_dir = find_project_root(ENV["TM_PROJECT_DIRECTORY"])
 
+<<<<<<< HEAD
+tiapp_xml = REXML::Document.new(File.new(File.join proj_dir, 'tiapp.xml')).root
+=======
 if proj_dir == nil then
   
   puts "<p><b>Error finding tiapp.xml</b> - You must open your TextMate project folder from within a Titanium project path.</p>"
@@ -36,7 +39,17 @@ if proj_dir == nil then
 end
 
 # Read project tiapp.xml
-tiapp_xml = REXML::Document.new(File.new(File.join proj_dir, 'tiapp.xml')).root
+tiapp_xml = File.open(File.join(proj_dir, "tiapp.xml"), 'r') { |f| f.read }
+
+# Fetch app id from tiapp.xml
+id = tiapp_xml.scan(/^\<id\>(.*)\<\/id\>/)[0]
+
+# Fetch app name from tiapp.xml
+name = tiapp_xml.scan(/^\<name\>(.*)\<\/name\>/)[0]
+
+# Is project a desktop or mobile project
+desktop = tiapp_xml =~ /\<url\>app:\/\/.+\<\/url\>/
+>>>>>>> fbf1a984c08fba35b3fce212bf31d07944cc4304
 
 @id = tiapp_xml.elements['id'].first.to_s
 @name = tiapp_xml.elements['name'].first.to_s
