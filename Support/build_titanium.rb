@@ -12,7 +12,7 @@
 
 require ENV['TM_BUNDLE_SUPPORT'] + '/common_build_titanium'
 require ENV['TM_BUNDLE_SUPPORT'] + '/config'
-
+require 'rexml/document'
 
 # Traverse the directory tree to find the root of the project
 def find_project_root(dir)
@@ -25,25 +25,18 @@ end
 # Find out project dir root
 proj_dir = find_project_root(ENV["TM_PROJECT_DIRECTORY"])
 
-# Read project tiapp.xml
-tiapp_xml = File.open(File.join(proj_dir, "tiapp.xml"), 'r') { |f| f.read }
+tiapp_xml = REXML::Document.new(File.new(File.join proj_dir, 'tiapp.xml')).root
 
-# Fetch app id from tiapp.xml
-id = tiapp_xml.scan(/^\<id\>(.*)\<\/id\>/)[0]
+@id = tiapp_xml.elements['id'].first.to_s
+@name = tiapp_xml.elements['name'].first.to_s
+@desktop = tiapp_xml.elements['url'].first.to_s.start_with?('app:')
 
-# Fetch app name from tiapp.xml
-name = tiapp_xml.scan(/^\<name\>(.*)\<\/name\>/)[0]
-
-# Is project a desktop or mobile project
-desktop = tiapp_xml =~ /\<url\>app:\/\/.+\<\/url\>/
-
-
-if desktop == nil then
+if @desktop
   # Command for running desktop app
-  cmd = "python '#{@titanium_path}/mobilesdk/osx/#{@tim_version}/iphone/builder.py' simulator '#{@ios_version}' '#{proj_dir}' #{@id} '#{@name}' iphone"
+  cmd = "python '#{@titanium_path}/sdk/osx/#{@tid_version}/tibuild.py' -d '#{proj_dir}/dist/osx' -a '#{@titanium_path}/sdk/osx/#{@tid_version}' -n -r -v -s '#{@titanium_path}' '#{proj_dir}'"
 elsif
   # Command for running iPhone app
-  cmd = "python '#{@titanium_path}/sdk/osx/#{@tid_version}/tibuild.py' -d '#{proj_dir}/dist/osx' -a '#{@titanium_path}/sdk/osx/#{@tid_version}' -n -r -v -s '#{@titanium_path}' '#{proj_dir}'"
+  cmd = "python '#{@titanium_path}/mobilesdk/osx/#{@tim_version}/iphone/builder.py' simulator '#{@ios_version}' '#{proj_dir}' #{@id} '#{@name}' iphone"
 end
 
 # Execute output
