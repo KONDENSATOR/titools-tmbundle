@@ -1,5 +1,5 @@
 # iPhone SDK version
-@ios_version = "4.3"
+@ios_version = "4.2"
 
 # Titanium Mobile version
 @tim_version = "1.6.1"
