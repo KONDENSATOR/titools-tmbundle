@@ -1,3 +1,7 @@
+require 'fileutils'
+require 'PP'
+require ENV['TM_BUNDLE_SUPPORT'] + '/common'
+require ENV['TM_BUNDLE_SUPPORT'] + '/config'
 
 def document_tmplate(cmd)
   bundle_support = ENV['TM_BUNDLE_SUPPORT']
@@ -134,4 +138,72 @@ def document_tmplate(cmd)
 </html>
 output
   puts html
+end
+
+def android_manifest_file(project_root)
+  return File.join(project_root, "build", "android", "AndroidManifest.xml")
+end
+
+def unpack_android_manifest_file(file) 
+  manifest = {
+    # Android intent, Find in AndroidManifest file
+    :intent   => File.open(file).select { |intent| intent =~ /intent.action/}.to_s.gsub('<action android:name="', '').gsub('" />', '').strip,          
+
+    # Intent category, Find in AndroidManifest file
+    :category => File.open(file).select { |category| category =~ /intent.category/}.to_s.gsub('<category android:name="', '').gsub('" />', '').strip,  
+
+    # Package name. Find in AndroidManifest file
+    :package  => File.open(file).select { |package| package =~ /package=/}.to_s.gsub('package="', '').gsub('"', '').strip,                             
+
+    # Action class name. Find in AndroidManifest file
+    :action   => File.open(file).select { |action| action =~ /name="\./}.to_s.gsub('android:name="', '').gsub('"', '').strip,
+  }
+end
+
+def run_android(manifest)
+  # Run app on device by executing am on the device shell
+  puts %x['#{@adb}' shell am start -a #{manifest[:intent]} -c #{manifest[:category]} -n #{manifest[:package]}/#{manifest[:action]}]
+end
+
+def install_android(appapk)
+  # Added ''-wrapping of .apk files path
+  puts %x['#{@adb}' install -r '#{appapk}']
+end
+
+def sign_android(appapk, appunsigned)
+  # Added ''-wrapping of .apk files paths 
+  puts %x[jarsigner -storepass tirocks -keystore "#{@titanium_path}/mobilesdk/osx/#{@tim_version}/android/dev_keystore" -signedjar '#{appapk}' '#{appunsigned}' tidev]
+end
+
+def prep_tmp_android(resource_root, project_root)
+  FileUtils.mkdir_p("#{project_root}/tmp/assets") 
+  FileUtils.cp_r(resource_root, "#{project_root}/tmp/assets/")
+
+  android_root = "#{project_root}/tmp/assets/Resources/android/"
+
+  Dir.foreach(android_root) do |item|
+    item = android_root + item
+    if File.file?(item)
+      FileUtils.cp(item, "#{project_root}/tmp/assets/Resources/")
+    end
+  end
+  
+  FileUtils.remove_dir("#{project_root}/tmp/assets/Resources/android")
+  FileUtils.remove_dir("#{project_root}/tmp/assets/Resources/iphone")
+end
+
+def android_console()
+  
+end
+
+def update_unsigned(project_root, appunsigned)
+  current_path = File.expand_path('.')
+  %x[cd #{project_root}/tmp && zip -r '#{appunsigned}' assets/Resources/\*] 
+  %x[cd #{current_path}]
+end
+
+def run_iphone_simulator(app_file_path)
+  # SimulateDevice, SimulateRestart, SessionOnLaunch, currentSDKRoot
+  # adb shell am start -a $intent -c $category -n $package/$package$action
+  puts %x[#{@iphone_simulator} -SimulateApplication '#{app_file_path}']  
 end

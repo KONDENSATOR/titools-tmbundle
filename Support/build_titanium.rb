@@ -45,7 +45,9 @@ tiapp_xml = REXML::Document.new(File.new(File.join proj_dir, 'tiapp.xml')).root
 if @desktop
   # Command for running desktop app
   cmd = "python '#{@titanium_path}/sdk/osx/#{@tid_version}/tibuild.py' -d '#{proj_dir}/dist/osx' -a '#{@titanium_path}/sdk/osx/#{@tid_version}' -n -r -v -s '#{@titanium_path}' '#{proj_dir}'"
-elsif
+elsif @android
+  cmd = "ruby '#{ENV['TM_BUNDLE_SUPPORT']}/build_ti_android.rb' '#{proj_dir}'"
+else
   # Command for running iPhone app
   cmd = "python '#{@titanium_path}/mobilesdk/osx/#{@tim_version}/iphone/builder.py' simulator '#{@ios_version}' '#{proj_dir}' #{@id} '#{@name}' iphone"
 end
