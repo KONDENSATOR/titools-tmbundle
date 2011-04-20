@@ -1,6 +1,4 @@
-# Override paths (FOR DEBUGING ONLY)
-$tm_bundle_support_path = File.expand_path("~/Library/Application Support/TextMate/Bundles/ti-tools.tmbundle/Support")
-$tm_project_path = File.expand_path("~/gitrep/smtg-journal-mobile/Resources")
+$tm_bundle_support_path = "#{ENV['TM_BUNDLE_SUPPORT']}" if $tm_bundle_support_path == nil
 
 require $tm_bundle_support_path + '/common/ti_tools'
 require $tm_bundle_support_path + '/common/ti_texts'
