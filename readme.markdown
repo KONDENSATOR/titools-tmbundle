@@ -33,4 +33,9 @@ Shortcuts
 
  * **Cmd + R** (Build and run project)
  * **Cmd + B** (Run JSLint on current javascript file)
+ * **Cmd + S** (Quick run JSLint on current javascript file, saves document)
 
+Configuration
+=============
+
+Update the config.yaml to support your own configuration.
