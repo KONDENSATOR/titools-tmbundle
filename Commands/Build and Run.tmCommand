@@ -5,7 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>saveModifiedFiles</string>
 	<key>command</key>
-	<string>ruby "$TM_BUNDLE_SUPPORT/build_titanium.rb"
+	<string>ruby "$TM_BUNDLE_SUPPORT/commands/build_and_run.rb"
 </string>
 	<key>input</key>
 	<string>none</string>

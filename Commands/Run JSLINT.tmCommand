@@ -5,7 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>saveModifiedFiles</string>
 	<key>command</key>
-	<string>ruby "$TM_BUNDLE_SUPPORT/full_jslint.rb"
+	<string>ruby "$TM_BUNDLE_SUPPORT/commands/full_jslint.rb"
 </string>
 	<key>input</key>
 	<string>selection</string>

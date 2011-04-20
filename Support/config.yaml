@@ -1,0 +1,24 @@
+# This is a configurationfile for ti-tools
+# TextMate bundle.
+#
+# Author::    Fredrik Andersson (mailto:fredrik@kondensator.se)
+# Copyright:: Copyright (c) 2011 KONDENSATOR AB
+# License::   
+
+# iPhone SDK version
+ios_version:    4.3
+
+# iPhone/iPad/Android (valid values: iphone, ipad or android)
+mobile_target:  android
+
+# Titanium Mobile version
+tim_version:    1.6.2
+
+# Titanium Desktop version
+tid_version:    1.1.0
+
+# Titanium sdk path
+titanium_path:  /Library/Application Support/Titanium
+
+# Android tools
+adb:            /Developer/android/platform-tools/adb
