@@ -11,7 +11,7 @@ Installation
 
 Open terminal and enter:
 
-`git clone git://github.com/KONDENSATOR/TM-JSLINT.git ~/Library/Application\ Support/TextMate/Bundles/ti-tools.tmbundle`
+`git clone git://github.com/KONDENSATOR/titools-tmbundle.git ~/Library/Application\ Support/TextMate/Bundles/titools.tmbundle`
 
 Restart TextMate or reload your bundles from within TextMate.
 
@@ -20,7 +20,7 @@ Updating
 
 Open terminal and enter:
 
-`cd ~/Library/Application\ Support/TextMate/Bundles/ti-tools.tmbundle`
+`cd ~/Library/Application\ Support/TextMate/Bundles/titools.tmbundle`
 
 `git pull`
 
