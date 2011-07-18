@@ -16,7 +16,7 @@
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
-	<string>source.js</string>
+	<string>source.js, source.coffee</string>
 	<key>uuid</key>
 	<string>73C3F17F-F39C-423B-B120-F7CE3D16B107</string>
 </dict>

@@ -12,7 +12,7 @@ ios_version:    4.3
 mobile_target:  android
 
 # Titanium Mobile version
-tim_version:    1.6.2
+tim_version:    1.7.0
 
 # Titanium Desktop version
 tid_version:    1.1.0
@@ -22,3 +22,9 @@ titanium_path:  /Library/Application Support/Titanium
 
 # Android tools
 adb:            /Developer/android/platform-tools/adb
+
+# ls ~/.android/avd | grep avd | sed 's/.avd//'
+android_emul:   titanium_233_160
+# android_emul:   titanium_14_240dp640x960
+
+# emulator -avd titanium_233_160 -cpu-delay 0 -netfast -no-boot-anim -port 5560 -logcat '*:d *' -no-boot-anim -partition-size 128 -qemu -icount auto
